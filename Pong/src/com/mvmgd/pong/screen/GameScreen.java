@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
 		final Paddle paddle2 = new Paddle(atlas);
 		paddle2.setX(Gdx.graphics.getWidth()-32);
 		stage.addActor(paddle2);
-		
+		Gdx.app.log("lots of", "butts");//This is the most important line of code
 		stage.addListener(new ClickListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
