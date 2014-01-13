@@ -9,6 +9,7 @@ public class MainGame extends Game {
 
 	@Override
 	public void create() {
+		Global.game = this;
 		setScreen(new LoadingScreen());
 		
 	}

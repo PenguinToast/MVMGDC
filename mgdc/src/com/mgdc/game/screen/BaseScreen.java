@@ -23,7 +23,7 @@ public abstract class BaseScreen implements Screen {
 		table = new Table(Global.skin);
 		table.setFillParent(true);
 		stage.addActor(table);
-		table.setBackground("background");
+//		table.setBackground("background");
 	}
 
 	@Override
