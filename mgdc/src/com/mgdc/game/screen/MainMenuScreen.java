@@ -20,6 +20,16 @@ public class MainMenuScreen extends BaseScreen {
 		table.add(startButton).space(5);
 		table.row();
 		
+		TextButton loadButton = new TextButton("Load", Global.skin);
+		loadButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Global.game.transition(new LoadScreen());
+			}
+		});
+		table.add(loadButton);
+		table.row();
+		
 		TextButton optionsButton = new TextButton("Options", Global.skin);
 		optionsButton.addListener(new ChangeListener() {
 			@Override

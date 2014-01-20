@@ -5,20 +5,38 @@
 		gray: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
 		darkGray: { r: 0.25, g: 0.25, b: 0.25, a: 1 },
 		lightGray: { r: 0.75, g: 0.75, b: 0.75, a: 1 },
+		transparentGray: { r: 0, g: 0, b: 0, a: 0.3},
 	},
 	com.badlogic.gdx.graphics.g2d.BitmapFont: {
 		default: { file: fonts/font.fnt },
+		smallFont: { file: fonts/smallfont.fnt },
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		btnUp: { name: button, color: lightGray },
 		btnDown: { name: button, color: darkGray },
 		btnOver: { name: button, color: gray },
 		btnWhite: { name: button, color: white},
+		transparentGray: { name: empty, color: transparentGray},
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: {
 			down: btnOver, up: btnWhite, over: btnUp, 
 			font: default, fontColor: black
 		},
+		small: {
+			down: btnOver, up: btnWhite, over: btnUp,
+			font: smallFont, fontColor: black
+		},
 	},
+	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+		default: {
+			font: default, fontColor: black
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+		default: {
+			background: btnUp, stageBackground: transparentGray,
+			titleFont: default, titleFontColor: black
+		}		
+	}
 }
