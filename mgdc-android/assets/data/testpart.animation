@@ -1,0 +1,32 @@
+{
+  frameSize : [8, 8],
+  frameDuration : 0.5,
+  frames : [
+    [ "walk.0", "walk.1" ],
+    [ "idle.0", "idle.1" ]
+  ],
+  stateTypes : [
+    "mainState" : [
+      default : "idle",
+      "idle" : [
+        frameDuration : 0.25
+      ],
+      "walk" : [
+        end : "loop"
+      ]
+    ]
+  ],
+  animationParts : [
+    "body" : [
+      frameDuration : 0.25,
+      states : [
+        "idle" : [
+          
+        ],
+        "walk" : [
+        
+        ]
+      ]
+    ]
+  ]
+}
