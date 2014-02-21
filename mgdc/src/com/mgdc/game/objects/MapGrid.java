@@ -49,7 +49,7 @@ public class MapGrid extends Actor {
 		float sy = getY() - h/2;
 		for (float x = 0; x < ex; x++) {
 			for (float y = 0; y < ey; y++) {
-				Random random = new Random((long) (((x + sx + ox) * (y + sy + oy)) * 100));
+				Random random = new Random((long) (((x * GRID_SIZE + sx + ox) * (y * GRID_SIZE + sy + oy))));
 				Texture rand = grass.get((int) (random.nextFloat() * grass.size));
 				batch.draw(rand, sx + x * GRID_SIZE + ox, sy + y * GRID_SIZE + oy);
 			}
