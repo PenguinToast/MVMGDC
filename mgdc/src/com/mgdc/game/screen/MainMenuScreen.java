@@ -14,7 +14,7 @@ public class MainMenuScreen extends BaseScreen {
 		startButton.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.exit();
+				Global.game.transition(new ExplorationScreen());
 			}
 		});
 		table.add(startButton).space(5);
