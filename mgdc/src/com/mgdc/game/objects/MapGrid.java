@@ -47,21 +47,22 @@ public class MapGrid extends Actor {
 		float ey = ((h) / GRID_SIZE);
 		float sx = getX() - w/2;
 		float sy = getY() - h/2;
-		for (float x = 0; x < ex; x++) {
-			for (float y = 0; y < ey; y++) {
+		for (float x = -1; x < ex + 1; x++) {
+			for (float y = -1; y < ey + 1; y++) {
 				Random random = new Random((long) (((x * GRID_SIZE + sx + ox) * (y * GRID_SIZE + sy + oy))));
 				Texture rand = grass.get((int) (random.nextFloat() * grass.size));
 				batch.draw(rand, sx + x * GRID_SIZE + ox, sy + y * GRID_SIZE + oy);
 			}
 		}
 		batch.end();
+		shape.setProjectionMatrix(batch.getProjectionMatrix());
 		shape.begin(ShapeType.Line);
 		shape.setColor(Color.BLACK);
-		for (float x = 0; x < w + GRID_SIZE; x += GRID_SIZE) {
-			shape.line(ox + x, oy - GRID_SIZE, ox + x, oy + h + GRID_SIZE);
+		for (float x = 0; x < ex + 1; x++) {
+			shape.line(sx + x * GRID_SIZE + ox, sy + oy - GRID_SIZE, sx + x * GRID_SIZE + ox, sy + oy + h + GRID_SIZE);
 		}
-		for (float y = 0; y < h + GRID_SIZE * 2; y += GRID_SIZE) {
-			shape.line(ox - GRID_SIZE, oy + y, ox + w + GRID_SIZE * 2, oy + y);
+		for (float y = 0; y < ey + 1; y++) {
+			shape.line(sx + ox - GRID_SIZE, sy + y * GRID_SIZE + oy, sx + ox + w + GRID_SIZE * 2, sy + y * GRID_SIZE + oy);
 		}
 		shape.end();
 		batch.begin();
