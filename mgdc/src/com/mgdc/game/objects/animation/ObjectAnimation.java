@@ -1,8 +1,10 @@
 package com.mgdc.game.objects.animation;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entries;
@@ -44,6 +46,10 @@ public class ObjectAnimation {
 
 	public void update(float delta) {
 		animationTimer += delta;
+	}
+
+	public void draw(Batch batch, Actor actor) {
+		batch.draw(getRegion(), actor.getX(), actor.getY());
 	}
 
 	public void setAnimation(String name) {

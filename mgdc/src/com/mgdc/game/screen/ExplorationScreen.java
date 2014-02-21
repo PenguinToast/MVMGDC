@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mgdc.game.Global;
 import com.mgdc.game.map.GameMap;
 import com.mgdc.game.objects.AnimationObject;
+import com.mgdc.game.objects.MapGrid;
 import com.mgdc.game.objects.animation.ObjectAnimation;
 
 public class ExplorationScreen extends BaseScreen {
@@ -26,7 +27,7 @@ public class ExplorationScreen extends BaseScreen {
 	public ExplorationScreen() {
 		map = new GameMap();
 		map.generateSector(0, 0);
-		mapRenderer = new IsometricTiledMapRenderer(map.getSector(0, 0).getMap());
+		mapRenderer = new IsometricTiledMapRenderer(map.getSector(0, 0));
 
 		gameStage = new Stage();
 
@@ -39,6 +40,8 @@ public class ExplorationScreen extends BaseScreen {
 		Gdx.input.setInputProcessor(multi);
 
 		touchOffset = new Vector2();
+		
+		gameStage.addActor(new MapGrid());
 
 	}
 
@@ -61,6 +64,12 @@ public class ExplorationScreen extends BaseScreen {
 
 		stage.act(delta);
 		stage.draw();
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		gameStage.setViewport(500, 300, true);
 	}
 
 	public class GameInputProcessor implements InputProcessor {

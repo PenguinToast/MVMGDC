@@ -1,7 +1,6 @@
 package com.mgdc.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -39,7 +38,7 @@ public class AnimationObject extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(animation.getRegion(), getX(), getY());
+		animation.draw(batch, this);
 	}
 	
 	public void cycleAnimation() {
