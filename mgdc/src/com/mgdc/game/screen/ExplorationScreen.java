@@ -69,7 +69,7 @@ public class ExplorationScreen extends BaseScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		gameStage.setViewport(500, 300, true);
+		gameStage.setViewport(width * 2, width * 2, true);
 	}
 
 	public class GameInputProcessor implements InputProcessor {
