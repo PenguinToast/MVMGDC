@@ -19,7 +19,8 @@ import com.mgdc.game.Global;
 
 public class GameMap {
 	private IntMap<IntMap<TiledMap>> sectors;
-	public static final int SECTOR_SIZE = 50;
+	public static final int SECTOR_SIZE = 5;
+	public static final int TILE_SIZE = 32;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private Array<TextureRegion> grass;
 
@@ -36,17 +37,20 @@ public class GameMap {
 	}
 	
 	public void draw(OrthographicCamera camera) {
-		float minX = (camera.position.x - camera.viewportWidth / 2) / SECTOR_SIZE;
-		float minY = (camera.position.y - camera.viewportHeight / 2) / SECTOR_SIZE;
-		float maxX = (camera.position.x + camera.viewportWidth / 2) / SECTOR_SIZE;
-		float maxY = (camera.position.y + camera.viewportHeight / 2) / SECTOR_SIZE;
+		float minX = (camera.position.x - camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE);
+		float minY = (camera.position.y - camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE);
+		float maxX = (camera.position.x + camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE);
+		float maxY = (camera.position.y + camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE);
 		
 		for (float x = minX; x <= maxX; x++) {
 			for (float y = minY; y <= maxY; y++) {
-				mapRenderer.setView(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth, camera.viewportHeight);
+				float width = camera.viewportWidth;
+				float height = camera.viewportHeight;
+				mapRenderer.setView(camera.combined, x * (SECTOR_SIZE * TILE_SIZE), y * (SECTOR_SIZE * TILE_SIZE), width, height);
 //				mapRenderer.setView(camera);
 				mapRenderer.setMap(ensureExists((int) Math.floor(x), (int) Math.floor(y)));
 				System.out.println(String.format("%d, %d", (int) Math.floor(x), (int) Math.floor(y)));
+				System.out.println(x * (SECTOR_SIZE * TILE_SIZE));
 				mapRenderer.render();
 			}
 		}
@@ -70,7 +74,7 @@ public class GameMap {
 			out.getTileSets().addTileSet(set);
 		}
 		if (out.getLayers().get("background") == null) {
-			TiledMapTileLayer layer = new TiledMapTileLayer(SECTOR_SIZE, SECTOR_SIZE, 32, 32);
+			TiledMapTileLayer layer = new TiledMapTileLayer(SECTOR_SIZE, SECTOR_SIZE, TILE_SIZE, TILE_SIZE);
 			layer.setName("background");
 			Cell cell = new Cell();
 			cell.setTile(out.getTileSets().getTile(0));
