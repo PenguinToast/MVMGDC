@@ -18,6 +18,14 @@ public class Point{
 		map = inmap;
 	}
 	
+	public void putSelfInMap(GameMap inmap, int newx, int newy)
+	{
+		x = newx;
+		y = newy;
+		map = inmap;
+		map.put(this, x, y);
+	}
+	
 	public Point()
 	{
 		x = null; y = null; map = null;

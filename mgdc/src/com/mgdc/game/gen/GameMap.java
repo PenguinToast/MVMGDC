@@ -2,7 +2,7 @@ package com.mgdc.game.gen;
 
 import com.mgdc.game.*;
 import java.util.*;
-public class GameMap
+public abstract class GameMap
 {
 	protected ArrayList<ArrayList<Point>> map = new ArrayList<ArrayList<Point>>();
 	protected Integer originx = 51, originy = 51;
@@ -22,24 +22,32 @@ public class GameMap
 	{
 		if(d == Direction.NORTH || d == Direction.NORTHEAST || d == Direction.NORTHWEST)
 		{
+			map.add(new ArrayList<Point>(map.get(0).size()));
 			originy++;	//I know this needs to be here though.
 		}
 		if(d == Direction.SOUTH || d == Direction.SOUTHEAST || d == Direction.SOUTHWEST)
 		{
+			
 			originy--;
 		}
 		if(d == Direction.EAST || d == Direction.SOUTHEAST || d == Direction.NORTHEAST)
 		{
+			
 			originx--;
 		}
 		if(d == Direction.WEST || d == Direction.NORTHWEST || d == Direction.SOUTHWEST)
 		{
+			
 			originx++;
 		}
 	}
 		
 	public static void main(String [] args)
 	{
+		
+	}
+	
+	public void put(Point p, int x, int y){
 		
 	}
 	
