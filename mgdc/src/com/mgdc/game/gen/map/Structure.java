@@ -1,6 +1,6 @@
 package com.mgdc.game.gen.map;
 
-import com.mgdc.game.gen.Point;
+import com.mgdc.game.gen.*;
 public class Structure {
 	protected Point[][] layout;
 	protected int height, width;
@@ -25,8 +25,21 @@ public class Structure {
 	
 	public void generate(int x, int y){
 		for(int i = 0; i < height; i++){
-			for(int j = 0; j < width; j++)
-				layout[i][j] = pic
+			for(int j = 0; j < width; j++){
+				layout[i][j] = getPoint(i,j);
+				layout[i][j].putSelfInMap(getMap(), x-i,y-j);
+			}
 		}
+		
+	}
+	
+	public Point getPoint(int i, int j)
+	{
+		return new Point(); //Currently returns an empty Point so that it'll compile.
+		//please write this when we set up the saving mechanism!
+	}
+	
+	public GameMap getMap(){
+		return new GameMap();		//To implement later, with some help.
 	}
 }

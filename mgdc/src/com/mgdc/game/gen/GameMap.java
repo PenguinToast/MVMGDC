@@ -2,7 +2,7 @@ package com.mgdc.game.gen;
 
 import com.mgdc.game.*;
 import java.util.*;
-public abstract class GameMap
+public class GameMap
 {
 	protected ArrayList<ArrayList<Point>> map = new ArrayList<ArrayList<Point>>();
 	protected Integer originx = 51, originy = 51;
