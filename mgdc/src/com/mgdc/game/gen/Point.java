@@ -1,6 +1,6 @@
 package com.mgdc.game.gen;
 
-public class Point{
+public class Point extends Renderer{
 	protected Integer x, y;
 	protected GameMap map;
 	
