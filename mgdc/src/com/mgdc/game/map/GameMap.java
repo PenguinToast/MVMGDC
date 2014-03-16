@@ -37,21 +37,27 @@ public class GameMap {
 	}
 	
 	public void draw(OrthographicCamera camera) {
-		float minX = (camera.position.x - camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE);
-		float minY = (camera.position.y - camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE);
-		float maxX = (camera.position.x + camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE);
-		float maxY = (camera.position.y + camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE);
+		float minX = (float) Math.floor((camera.position.x - camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE));
+		float minY = (float) Math.floor((camera.position.y - camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE));
+		float maxX = (float) Math.ceil((camera.position.x + camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE));
+		float maxY = (float) Math.ceil((camera.position.y + camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE));
 		
 		for (float x = minX; x <= maxX; x++) {
 			for (float y = minY; y <= maxY; y++) {
 				float width = camera.viewportWidth;
 				float height = camera.viewportHeight;
-				mapRenderer.setView(camera.combined, x * (SECTOR_SIZE * TILE_SIZE), y * (SECTOR_SIZE * TILE_SIZE), width, height);
-//				mapRenderer.setView(camera);
-				mapRenderer.setMap(ensureExists((int) Math.floor(x), (int) Math.floor(y)));
-				System.out.println(String.format("%d, %d", (int) Math.floor(x), (int) Math.floor(y)));
-				System.out.println(x * (SECTOR_SIZE * TILE_SIZE));
+				// OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(ensureExists((int) Math.floor(x), (int) Math.floor(y)));
+				mapRenderer.setMap(ensureExists((int) x, (int) y));
+				float dx = (float) -x * (SECTOR_SIZE * TILE_SIZE);
+				float dy = (float) -y * (SECTOR_SIZE * TILE_SIZE);
+				camera.translate(dx, dy);
+				camera.update();
+				mapRenderer.setView(camera);
+				// mapRenderer.setView(camera);
+				// System.out.println(String.format("%d, %d", (int) Math.floor(x), (int) Math.floor(y)));
 				mapRenderer.render();
+				camera.translate(-dx, -dy);
+				camera.update();
 			}
 		}
 	}
