@@ -18,7 +18,7 @@ public class GameMap
 		}
 	}
 	
-	public void addInDirection(Direction d)		//Will do later when my brain is working.
+	public void addInDirection(int d)		//Will do later when my brain is working.
 	{
 		if(d == Direction.NORTH || d == Direction.NORTHEAST || d == Direction.NORTHWEST)
 		{
@@ -27,17 +27,19 @@ public class GameMap
 		}
 		if(d == Direction.SOUTH || d == Direction.SOUTHEAST || d == Direction.SOUTHWEST)
 		{
-			
+			map.add(new ArrayList<Point>(map.get(0).size()));
 			originy--;
 		}
 		if(d == Direction.EAST || d == Direction.SOUTHEAST || d == Direction.NORTHEAST)
 		{
-			
+			for(ArrayList<Point> a: map)
+				a.add(0, new Point());
 			originx--;
 		}
 		if(d == Direction.WEST || d == Direction.NORTHWEST || d == Direction.SOUTHWEST)
 		{
-			
+			for(ArrayList<Point> a : map)
+				a.add(new Point());
 			originx++;
 		}
 	}

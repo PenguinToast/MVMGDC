@@ -1,16 +1,16 @@
 package com.mgdc.game;
 
-public enum Direction {
-	NORTH,
-	NORTHEAST,
-	EAST,
-	SOUTHEAST,
-	SOUTH,
-	SOUTHWEST,
-	WEST,
-	NORTHWEST;
+public class Direction {
+	public static int NORTH = 0;
+	public static int NORTHEAST = 45;
+	public static int EAST = 90;
+	public static int SOUTHEAST = 135;
+	public static int SOUTH = 180;
+	public static int SOUTHWEST = 225;
+	public static int WEST = 270;
+	public static int NORTHWEST = 315;
 	
-	public Direction roundToDirection(Integer bearing)
+	public int roundToDirection(Integer bearing)
 	{
 		int a = bearing.intValue();
 		while(a < 361 && a > -1)
