@@ -1,5 +1,6 @@
 package com.mgdc.game.gen;
 
+import java.lang.IndexOutOfBoundsException;
 import com.mgdc.game.*;
 import java.util.*;
 public class GameMap
@@ -43,13 +44,9 @@ public class GameMap
 			originx++;
 		}
 	}
-		
-	public static void main(String [] args)
-	{
-		
-	}
 	
-	public void put(Point p, int x, int y){
+	public void put(Point p, int x, int y) throws IndexOutOfBoundsException
+	{
 		
 	}
 	

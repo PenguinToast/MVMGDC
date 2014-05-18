@@ -10,27 +10,23 @@ public class Direction {
 	public static int WEST = 270;
 	public static int NORTHWEST = 315;
 	
-	public int roundToDirection(Integer bearing)
+	public int roundToDirection(int bearing)
 	{
-		int a = bearing.intValue();
-		while(a < 361 && a > -1)
-		{
-			if(a < 0) a += 360;
-			if(a > 360) a -= 360;
-		}
-		if(isBetween(a, 337, 22)) return NORTH;
-		if(isBetween(a, 22, 67)) return NORTHEAST;
-		if(isBetween(a, 67, 112)) return EAST;
-		if(isBetween(a, 112, 157)) return SOUTHEAST;
-		if(isBetween(a, 157, 202)) return SOUTH;
-		if(isBetween(a, 202, 247)) return SOUTHWEST;
-		if(isBetween(a, 247, 292)) return WEST;
+		int a = bearing;
+		a %= 360;
+		if(btwn(a, 337, 22)) return NORTH;
+		if(btwn(a, 22, 67)) return NORTHEAST;
+		if(btwn(a, 67, 112)) return EAST;
+		if(btwn(a, 112, 157)) return SOUTHEAST;
+		if(btwn(a, 157, 202)) return SOUTH;
+		if(btwn(a, 202, 247)) return SOUTHWEST;
+		if(btwn(a, 247, 292)) return WEST;
 		return NORTHWEST;
 		
 	}
 	
-	public boolean isBetween(int x, int min, int max)
+	public boolean btwn(int x, int min, int max)
 	{
-		return (x > min && x <= max);
+		return (x >= min && x < max);
 	}
 }
