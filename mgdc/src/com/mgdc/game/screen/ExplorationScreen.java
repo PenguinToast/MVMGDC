@@ -37,7 +37,7 @@ public class ExplorationScreen extends BaseScreen {
 
 		touchOffset = new Vector2();
 		
-		gameStage.addActor(new MapGrid());
+		// gameStage.addActor(new MapGrid());
 
 	}
 
@@ -78,7 +78,7 @@ public class ExplorationScreen extends BaseScreen {
 					public void input(String text) {
 						AnimationObject actor = new AnimationObject(new ObjectAnimation(Global.assets.get(Global.assetMap.get(text),
 								ObjectAnimation.class)));
-						actor.setPosition(20, 20);
+						actor.setPosition(camera.position.x, camera.position.y);
 						gameStage.addActor(actor);
 					}
 
