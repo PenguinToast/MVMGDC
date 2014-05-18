@@ -1,0 +1,7 @@
+{
+  frameSize : [32, 32],
+  frameDuration : 0.5,
+  frames : [
+    [ "idle.0" ]
+  ]
+}
