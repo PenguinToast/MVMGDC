@@ -17,7 +17,6 @@ import com.mgdc.game.objects.MapGrid;
 import com.mgdc.game.objects.animation.ObjectAnimation;
 
 public class ExplorationScreen extends BaseScreen {
-	private IsometricTiledMapRenderer mapRenderer;
 	private GameMap map;
 	private OrthographicCamera camera;
 	private Vector2 touchLoc;
@@ -26,13 +25,10 @@ public class ExplorationScreen extends BaseScreen {
 
 	public ExplorationScreen() {
 		map = new GameMap();
-		map.generateSector(0, 0);
-		mapRenderer = new IsometricTiledMapRenderer(map.getSector(0, 0));
 
 		gameStage = new Stage();
 
 		camera = new OrthographicCamera(500, 300);
-		mapRenderer.setView(camera);
 		gameStage.setCamera(camera);
 
 
@@ -56,8 +52,8 @@ public class ExplorationScreen extends BaseScreen {
 		camera.translate(dx, dy);
 
 		camera.update();
-		mapRenderer.setView(camera);
-		mapRenderer.render();
+		
+		map.draw(camera);
 
 		gameStage.act(delta);
 		gameStage.draw();
@@ -69,7 +65,7 @@ public class ExplorationScreen extends BaseScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		gameStage.setViewport(width * 2, width * 2, true);
+		gameStage.setViewport(width, height, true);
 	}
 
 	public class GameInputProcessor implements InputProcessor {
