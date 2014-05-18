@@ -29,13 +29,11 @@ public class GameMap
 		if(d == Direction.SOUTH || d == Direction.SOUTHEAST || d == Direction.SOUTHWEST)
 		{
 			map.add(new ArrayList<Point>(map.get(0).size()));
-			originy--;
 		}
 		if(d == Direction.EAST || d == Direction.SOUTHEAST || d == Direction.NORTHEAST)
 		{
 			for(ArrayList<Point> a: map)
 				a.add(0, new Point());
-			originx--;
 		}
 		if(d == Direction.WEST || d == Direction.NORTHWEST || d == Direction.SOUTHWEST)
 		{
