@@ -41,7 +41,5 @@ public class Point extends Renderer{
 	public void setY(Integer newy){ 
 		y = newy;
 		map.refreshPosition(this);
-	}
-	
-	
+	}	
 }
