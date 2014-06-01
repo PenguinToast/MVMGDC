@@ -6,6 +6,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -31,9 +33,11 @@ public class GameMap {
 		grass = new Array<TextureRegion>();
 		FileHandle dir = Gdx.files.local("data/terrain");
 		for (FileHandle file : dir.list()) {
-			Global.assets.load(new AssetDescriptor<Texture>(file, Texture.class));
-			Global.assets.finishLoading();
-			grass.add(new TextureRegion(Global.assets.get(file.path(), Texture.class)));
+			if (!file.isDirectory()) {
+				Global.assets.load(new AssetDescriptor<Texture>(file, Texture.class));
+				Global.assets.finishLoading();
+				grass.add(new TextureRegion(Global.assets.get(file.path(), Texture.class)));
+			}
 		}
 	}
 
@@ -43,12 +47,21 @@ public class GameMap {
 		float maxX = (float) Math.ceil((camera.position.x + camera.viewportWidth / 2) / (SECTOR_SIZE * TILE_SIZE));
 		float maxY = (float) Math.ceil((camera.position.y + camera.viewportHeight / 2) / (SECTOR_SIZE * TILE_SIZE));
 
+		for (int i = (int) minX - 1; i <= (int) maxY + 1; i++) {
+			for (int j = (int) minY - 1; j <= (int) maxY + 1; j++) {
+				ensureExists(i, j);
+			}
+		}
+
+
+
 		for (float x = minX; x <= maxX; x++) {
 			for (float y = minY; y <= maxY; y++) {
 				float width = camera.viewportWidth;
 				float height = camera.viewportHeight;
+				generateSector((int) x, (int) y);
 				// OrthogonalTiledMapRenderer mapRenderer = new OrthogonalTiledMapRenderer(ensureExists((int) Math.floor(x), (int) Math.floor(y)));
-				mapRenderer.setMap(ensureExists((int) x, (int) y));
+				mapRenderer.setMap(getSector((int) x, (int) y));
 				float dx = (float) -x * (SECTOR_SIZE * TILE_SIZE);
 				float dy = (float) -y * (SECTOR_SIZE * TILE_SIZE);
 				camera.translate(dx, dy);
@@ -64,8 +77,9 @@ public class GameMap {
 	}
 
 	public void setTile(int x, int y, TiledMapTile tile) {
-		int sectorX = (int) Math.floor((double) x / (double) SECTOR_SIZE);
-		int sectorY = (int) Math.floor((double) y / (double) SECTOR_SIZE);
+		int[] sector = sectorFromCoords(x, y);
+		int sectorX = sector[0];
+		int sectorY = sector[1];
 		TiledMap map = ensureExists(sectorX, sectorY);
 		int tileX = x - (sectorX * SECTOR_SIZE);
 		int tileY = y - (sectorY * SECTOR_SIZE);
@@ -73,8 +87,16 @@ public class GameMap {
 		Cell cell = new Cell();
 		cell.setTile(tile);
 		layer.setCell(tileX, tileY, cell);
-		
-		
+
+
+	}
+
+	public int[] sectorFromCoords(int x, int y) {
+		return new int[] {(int) Math.floor((double) x / (double) SECTOR_SIZE), (int) Math.floor((double) y / (double) SECTOR_SIZE)};
+	}
+
+	public int[] coordsFromSector(int x, int y) {
+		return new int[] {x * SECTOR_SIZE, y * SECTOR_SIZE};
 	}
 
 	public TiledMap ensureExists(int x, int y) {
@@ -110,14 +132,114 @@ public class GameMap {
 	}
 
 	public void generateSector(int x, int y) {
-		if(!sectors.containsKey(x)) {
-			sectors.put(x, new IntMap<TiledMap>());
+		TiledMap[][] sectors = new TiledMap[3][3];
+		// Generate points
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				TiledMap sector = ensureExists(i, j);
+				sectors[i - (x - 1)][j - (y - 1)] = sector;
+				if (!sector.getProperties().get("pointsGenerated", false, Boolean.class)) {
+					int[] coords = coordsFromSector(i, j);
+					Array<GenerationPoint> points = getNearbyPoints(coords[0], coords[1]);
+					for (int a = 0; a < SECTOR_SIZE; a++) {
+						for (int b = 0; b < SECTOR_SIZE; b++) {
+							float baseChance = GenerationConstants.GENERATION_POINT_CHANCE;
+							for (GenerationPoint p : points) {
+								float dist = (float) (Math.pow(p.getX() - (coords[0] + a), 2) + Math.pow(p.getY() - (coords[1] + b), 2));
+								baseChance *= Math.min(1, dist / GenerationConstants.GENERATION_POINT_DIST);
+							}
+							float roll = (float) Math.random();
+							if (roll <= baseChance) { // Make a point
+								GenerationPoint point = new GenerationPoint();
+								point.setX(coords[0] + a);
+								point.setY(coords[1] + b);
+								point.setTileType((int) (Math.random() * grass.size));
+								sector.getLayers().get(0).getObjects().add(point);
+								points.add(point);
+							}
+						}
+					}
+					sector.getProperties().put("pointsGenerated", true);
+				}
+			}
 		}
-		sectors.get(x).put(y, new TiledMap());
+		if (sectors[1][1].getProperties().get("terrainGenerated", false, Boolean.class)) {
+			return;
+		}
+		// Generate terrain
+		TiledMapTileLayer layer = (TiledMapTileLayer) sectors[1][1].getLayers().get(0);
+		for (int a = 0; a < SECTOR_SIZE; a++) {
+			for (int b = 0; b < SECTOR_SIZE; b++) {
+				int[] coords = new int[] {x * SECTOR_SIZE + a, y* SECTOR_SIZE + b};
+				Array<GenerationPoint> points = getNearbyPoints(coords[0], coords[1]);
+				
+				/*
+				for (GenerationPoint p : points) {
+					if (p.getX() == coords[0] && p.getY() == coords[1]) {
+
+						Cell cell = new Cell();
+						cell.setTile(sectors[1][1].getTileSets().getTile(p.getTileType()));
+						layer.setCell(a, b, cell);
+					}
+				}
+				//*/
+				
+				//*
+				float[] chances = new float[grass.size];
+				for (GenerationPoint p : points) {
+					float dist = (float) (Math.pow(p.getX() - (coords[0]), 2) + Math.pow(p.getY() - (coords[1]), 2));
+					//dist *= dist;
+					chances[p.getTileType()] += 1f / dist;
+				}
+				float[] ranges = new float[grass.size];
+				float sum = 0;
+				for (int i = 0; i < grass.size; i++) {
+					sum += chances[i];
+					ranges[i] = sum;
+				}
+				float roll = (float) (Math.random() * sum);
+				int type = -1;
+				for (int i = 0; i < grass.size; i++) {
+					if (roll <= ranges[i]) {
+						type = i;
+						break;
+					}
+				}
+				Cell cell = new Cell();
+				cell.setTile(sectors[1][1].getTileSets().getTile(type));
+				layer.setCell(a, b, cell);
+				//*/
+				
+			}
+		}
+		sectors[1][1].getProperties().put("terrainGenerated", true);
 	}
 
 	public TiledMap getSector(int x, int y) {
+		if (!sectors.containsKey(x)) {
+			return null;
+		}
+		if (!sectors.get(x).containsKey(y)) {
+			return null;
+		}
 		return sectors.get(x).get(y);
+	}
+
+	public Array<GenerationPoint> getNearbyPoints(int x, int y) {
+		int[] sectorCoords = sectorFromCoords(x, y);
+		Array<GenerationPoint> out = new Array<GenerationPoint>();
+		for (int i = sectorCoords[0] - 1; i <= sectorCoords[0] + 1; i++) {
+			for (int j = sectorCoords[1] - 1; j <= sectorCoords[1] + 1; j++) {
+				TiledMap sect = getSector(i, j);
+				if (sect != null) {
+					MapObjects objs = sect.getLayers().get(0).getObjects();
+					for (MapObject obj : objs) {
+						out.add((GenerationPoint) obj);
+					}
+				}
+			}
+		}
+		return out;
 	}
 
 	public void save() {

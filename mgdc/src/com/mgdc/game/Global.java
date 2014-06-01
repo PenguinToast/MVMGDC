@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class Global {
+	public static final boolean DEBUG = true;
+	
 	public static MainGame game;
 	
 	public static AssetManager assets;

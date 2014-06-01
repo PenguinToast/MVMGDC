@@ -15,6 +15,7 @@ public class ObjectAnimation {
 	private float animationTimer;
 	private ObjectMap<String, Animation> animations;
 	private Vector2 size;
+	public static final float scale = 4;
 
 	public ObjectAnimation() {
 	}
@@ -28,7 +29,7 @@ public class ObjectAnimation {
 			animations.put(entry.key, copy);
 		}
 		currentAnimation = animations.keys().next();
-		setSize(new Vector2(source.size));
+		setSize(new Vector2(source.size).scl(scale));
 	}
 
 	public void setAnimations(ObjectMap<String, Animation> animations) {
@@ -49,7 +50,8 @@ public class ObjectAnimation {
 	}
 
 	public void draw(Batch batch, Actor actor) {
-		batch.draw(getRegion(), actor.getX(), actor.getY());
+		TextureRegion reg = getRegion();
+		batch.draw(reg, actor.getX(), actor.getY(), reg.getRegionWidth() * scale, reg.getRegionHeight() * scale);
 	}
 
 	public void setAnimation(String name) {
