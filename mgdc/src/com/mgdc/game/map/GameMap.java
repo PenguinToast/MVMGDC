@@ -23,7 +23,7 @@ import com.mgdc.game.Global;
 public class GameMap {
 	private IntMap<IntMap<TiledMap>> sectors;
 	public static final int SECTOR_SIZE = 20;
-	public static final int TILE_SIZE = 32;
+	public static final int TILE_SIZE = 128;
 	private OrthogonalTiledMapRenderer mapRenderer;
 	private Array<TextureRegion> grass;
 
