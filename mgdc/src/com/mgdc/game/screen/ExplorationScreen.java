@@ -8,6 +8,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mgdc.game.Global;
@@ -46,8 +48,18 @@ public class ExplorationScreen extends BaseScreen {
 		gameStage.addActor(player);
 		
 		// Make a HUD
-		TextButton button = new TextButton("why hello there", Global.skin);
-		table.add(button).expand().bottom();
+		final TextButton button = new TextButton("100/100", Global.skin);
+		button.setDisabled(true);
+		button.getStyle();
+		table.add(button).expand().bottom().fillX();
+		player.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int other) {
+				player.setHealth(player.getHealth() - 5);
+				button.setText(String.format("%.0f / 100", player.getHealth()));
+				return true;
+			}
+		});
 	}
 
 	@Override
@@ -95,7 +107,8 @@ public class ExplorationScreen extends BaseScreen {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		gameStage.setViewport(width * 1, height * 1, true);
+		float scale = 5.0f;
+		gameStage.setViewport(width * scale, height * scale, true);
 	}
 
 	public class GameInputProcessor implements InputProcessor {

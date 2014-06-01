@@ -20,7 +20,8 @@
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: {
-			down: btnOver, up: btnWhite, over: btnUp, 
+			down: btnOver, up: btnWhite, over: btnUp,
+      disabled: btnUp,
 			font: default, fontColor: black
 		},
 		small: {

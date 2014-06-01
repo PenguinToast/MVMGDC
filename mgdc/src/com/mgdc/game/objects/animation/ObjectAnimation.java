@@ -15,7 +15,7 @@ public class ObjectAnimation {
 	private float animationTimer;
 	private ObjectMap<String, Animation> animations;
 	private Vector2 size;
-	public static final float scale = 4;
+	public static final float scale = 16;
 
 	public ObjectAnimation() {
 	}

@@ -11,6 +11,8 @@ public class Player extends Actor {
 	private Array<String> animationNames;
 	private int animCount;
 	
+	private float health = 100f;
+	
 	byte moveX = 0;
 	byte moveY = 0;
 	
@@ -41,6 +43,14 @@ public class Player extends Actor {
 	public void move(byte x, byte y) {
 		moveX = x;
 		moveY = y;
+	}
+	
+	public void setHealth(float health) {
+		this.health = health;
+	}
+	
+	public float getHealth() {
+		return health;
 	}
 	
 	public void cycleAnimation() {
