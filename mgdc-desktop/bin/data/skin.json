@@ -6,6 +6,7 @@
 		darkGray: { r: 0.25, g: 0.25, b: 0.25, a: 1 },
 		lightGray: { r: 0.75, g: 0.75, b: 0.75, a: 1 },
 		transparentGray: { r: 0, g: 0, b: 0, a: 0.3},
+    green: { r: 0, g: 1, b: 0, a: 1 }
 	},
 	com.badlogic.gdx.graphics.g2d.BitmapFont: {
 		default: { file: fonts/font.fnt },
@@ -17,6 +18,7 @@
 		btnOver: { name: button, color: gray },
 		btnWhite: { name: button, color: white},
 		transparentGray: { name: empty, color: transparentGray},
+    progressBarGreen: { name: empty, color: green }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		default: {
@@ -28,11 +30,20 @@
 			down: btnOver, up: btnWhite, over: btnUp,
 			font: smallFont, fontColor: black
 		},
+    bar: {
+			down: btnOver, up: btnWhite, over: btnUp,
+      disabled: btnWhite,
+			font: default, fontColor: black
+    }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		default: {
 			font: default, fontColor: black
-		}
+		},
+    bar: {
+      font: default, fontColor: black,
+      background: progressBarGreen
+    }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		default: {

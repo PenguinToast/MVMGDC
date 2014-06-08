@@ -32,7 +32,8 @@ public class LoadingScreen extends BaseScreen {
 		Global.assets.finishLoading();
 		loadFiles();
 		Global.assets.finishLoading();
-		Global.skin = new Skin(Gdx.files.internal("data/skin.json"), Global.assets.get("game.atlas", TextureAtlas.class));
+		Global.atlas = Global.assets.get("game.atlas", TextureAtlas.class);
+		Global.skin = new Skin(Gdx.files.internal("data/skin.json"), Global.atlas);
 		Global.game.transition(new MainMenuScreen());
 	}
 

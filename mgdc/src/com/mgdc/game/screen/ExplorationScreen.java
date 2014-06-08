@@ -11,12 +11,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.mgdc.game.Global;
 import com.mgdc.game.map.GameMap;
 import com.mgdc.game.objects.AnimationObject;
 import com.mgdc.game.objects.Player;
 import com.mgdc.game.objects.animation.ObjectAnimation;
+import com.mgdc.game.objects.exploration.Shrub;
+import com.mgdc.game.ui.ProgressBar;
 
 public class ExplorationScreen extends BaseScreen {
 	private GameMap map;
@@ -42,13 +43,15 @@ public class ExplorationScreen extends BaseScreen {
 		
 		// gameStage.addActor(new MapGrid());
 
+		gameStage.addActor(new Shrub());
 		player = new Player(new ObjectAnimation(Global.assets.get(Global.assetMap.get("testanimation"),
 				ObjectAnimation.class)));
 		player.setPosition(0, 0);
 		gameStage.addActor(player);
 		
+		
 		// Make a HUD
-		final TextButton button = new TextButton("100/100", Global.skin);
+		final ProgressBar button = new ProgressBar(100, Global.skin);
 		button.setDisabled(true);
 		button.getStyle();
 		table.add(button).expand().bottom().fillX();
@@ -56,7 +59,7 @@ public class ExplorationScreen extends BaseScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int other) {
 				player.setHealth(player.getHealth() - 5);
-				button.setText(String.format("%.0f / 100", player.getHealth()));
+				button.setProgress(player.getHealth());
 				return true;
 			}
 		});
